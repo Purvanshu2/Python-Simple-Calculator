@@ -96,7 +96,6 @@ for button in buttons:
     else:
         ttk.Button(root, text=button, command=lambda b=button: insert(b)).grid(row=buttons.index(button)//4 + 1, column=buttons.index(button)%4, padx=5, pady=5, sticky="nsew")
 
-root.bind("<Configure>", resize_font)
 
 root.mainloop()
 
