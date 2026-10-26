@@ -71,9 +71,7 @@ def sign_change():
         text = '-' + text
     entry.delete(0, tk.END)
     entry.insert(0, text)
-
     
-        
 
 entry = ttk.Entry(root, justify="right")
 entry.grid(row=0, column=0, columnspan=4, padx=10, pady=10, sticky="nsew")
@@ -98,10 +96,7 @@ for button in buttons:
     else:
         ttk.Button(root, text=button, command=lambda b=button: insert(b)).grid(row=buttons.index(button)//4 + 1, column=buttons.index(button)%4, padx=5, pady=5, sticky="nsew")
 
-for row in range(7):
-    root.rowconfigure(row, weight=1)
-for col in range(4):
-    root.columnconfigure(col, weight=1)
+root.bind("<Configure>", resize_font)
 
 root.mainloop()
 
