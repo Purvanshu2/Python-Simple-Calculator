@@ -4,6 +4,8 @@ from tkinter import ttk
 root = tk.Tk()
 root.title("Calculator")
 
+style = ttk.Style()
+
 def insert(num):
     entry.insert(tk.END, num)
 
@@ -72,8 +74,15 @@ def sign_change():
     entry.delete(0, tk.END)
     entry.insert(0, text)
     
+def resize(event):
+    if event.widget!=root:
+        return
+    size = max(12, min(40,event.height//18))
+    button_size = max(10, min(24, event.height // 24))
+    entry.configure(font=("Arial", size))
+    style.configure("TButton", font=("Arial", button_size))
 
-entry = ttk.Entry(root, justify="right")
+entry = ttk.Entry(root, justify="right", font=("Arial", 24))
 entry.grid(row=0, column=0, columnspan=4, padx=10, pady=10, sticky="nsew")
 
 buttons =[
@@ -84,17 +93,25 @@ buttons =[
     '%' , '0' , '.'  , '='
 ]
 
+
+root.bind("<Configure>",resize)
+
 for button in buttons:
     if button == 'AC':
-        ttk.Button(root, text=button, command=AllClear).grid(row=buttons.index(button)//4 + 1, column=buttons.index(button)%4, padx=5, pady=5, sticky="nsew")
+        ttk.Button(root, text=button, command=AllClear, style="TButton").grid(row=buttons.index(button)//4 + 1, column=buttons.index(button)%4, padx=5, pady=5, sticky="nsew")
     elif button == '<=':
-        ttk.Button(root, text=button, command=backspace).grid(row=buttons.index(button)//4 + 1, column=buttons.index(button)%4, padx=5, pady=5, sticky="nsew")
+        ttk.Button(root, text=button, command=backspace, style="TButton").grid(row=buttons.index(button)//4 + 1, column=buttons.index(button)%4, padx=5, pady=5, sticky="nsew")
     elif button == '+/-':
-        ttk.Button(root, text=button, command=sign_change).grid(row=buttons.index(button)//4 + 1, column=buttons.index(button)%4, padx=5, pady=5, sticky="nsew")
+        ttk.Button(root, text=button, command=sign_change, style="TButton").grid(row=buttons.index(button)//4 + 1, column=buttons.index(button)%4, padx=5, pady=5, sticky="nsew")
     elif button == '=':
-        ttk.Button(root, text=button, command=calculate).grid(row=buttons.index(button)//4 + 1, column=buttons.index(button)%4, padx=5, pady=5, sticky="nsew")
+        ttk.Button(root, text=button, command=calculate, style="TButton").grid(row=buttons.index(button)//4 + 1, column=buttons.index(button)%4, padx=5, pady=5, sticky="nsew")
     else:
-        ttk.Button(root, text=button, command=lambda b=button: insert(b)).grid(row=buttons.index(button)//4 + 1, column=buttons.index(button)%4, padx=5, pady=5, sticky="nsew")
+        ttk.Button(root, text=button, command=lambda b=button: insert(b), style="TButton").grid(row=buttons.index(button)//4 + 1, column=buttons.index(button)%4, padx=5, pady=5, sticky="nsew")
+
+for col in range(4):
+    root.grid_columnconfigure(col, weight=1)
+for row in range(6):
+    root.grid_rowconfigure(row, weight=1)
 
 
 root.mainloop()
